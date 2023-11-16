@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:rosseti_project/SMS_code.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class PhoneNumber extends StatelessWidget {
+class PhoneNumber extends StatefulWidget {
   const PhoneNumber({super.key});
+
+  @override
+  State<PhoneNumber> createState() => _PhoneNumberState();
+}
+
+class _PhoneNumberState extends State<PhoneNumber> {
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +26,7 @@ class PhoneNumber extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               child: TextField(
+                controller: textController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   labelText: 'Телефон', // Устанавливаем подпись поля
@@ -32,6 +40,7 @@ class PhoneNumber extends StatelessWidget {
               height: 58,
               child: ElevatedButton(
                 onPressed: () {
+                  PhoneNumberCheker().postData(textController.text);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const SMScode(),
@@ -48,7 +57,7 @@ class PhoneNumber extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          CryptoCoinsRepository().getCoinList();
+          PhoneNumberCheker().postData('data');
         },
         heroTag: 'bombitka',
       ),
