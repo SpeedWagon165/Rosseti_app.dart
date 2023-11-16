@@ -40,12 +40,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
               height: 58,
               child: ElevatedButton(
                 onPressed: () {
-                  PhoneNumberCheker().postData(textController.text);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const SMScode(),
-                    ),
-                  );
+                  PhoneNumberCheker().postData(textController.text, context);
                 },
                 child: const Text(
                   'Далее',
@@ -57,7 +52,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          PhoneNumberCheker().postData('data');
+          PhoneNumberCheker().postData('data', context);
         },
         heroTag: 'bombitka',
       ),
