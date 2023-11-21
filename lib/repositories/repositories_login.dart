@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,21 +32,39 @@ class PhoneNumberCheker {
     }
   }
 
-  Future<void> postCode(String code, BuildContext context) async {
+  Future<String?> postCode(String code, BuildContext context) async {
     print('zavupa coda');
     try {
       final response = await dio.post('auth/verify-code', data: {"code": code});
       if (response.statusCode == 200) {
         final responseData = response.data;
         final token = responseData['token'];
+        setupInterceptors(token);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const MainPage(),
           ),
         );
+        return token;
+      } else {
+        return null;
       }
     } catch (e) {
       print(e);
     }
+    return null;
+  }
+
+  void setupInterceptors(String? token) {
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
   }
 }
