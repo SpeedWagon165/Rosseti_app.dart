@@ -52,7 +52,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          PhoneNumberCheker().postData('data', context);
+          SendSolution();
         },
         heroTag: 'bombitka',
       ),

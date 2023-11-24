@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/creation_page_3.dart';
 
-import 'Shablons/CreationPage_Shablon.dart';
+import 'Models/CreationPage_Shablon.dart';
 
 class CreationPage2 extends StatelessWidget {
   const CreationPage2({super.key});
@@ -16,7 +16,6 @@ class CreationPage2 extends StatelessWidget {
         isConditionMet: true,
         next: CreationPage3(),
       ),
-
     );
   }
 }

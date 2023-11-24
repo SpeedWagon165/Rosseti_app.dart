@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/Shablons/osnova_sozdania.dart';
-import 'package:rosseti_project/Shablons/project_botton_copy.dart';
+import 'package:rosseti_project/Models/osnova_sozdania.dart';
+import 'package:rosseti_project/Models/project_botton_copy.dart';
 
 class Projects extends StatelessWidget {
   const Projects({super.key});

@@ -5,9 +5,10 @@ import 'package:rosseti_project/SMS_code.dart';
 import 'package:rosseti_project/mainpage.dart';
 
 class PhoneNumberCheker {
-  final dio = Dio();
+  final Dio dio;
 
-  PhoneNumberCheker() {
+  PhoneNumberCheker() : dio = Dio() {
+    print('Это конструктион');
     dio.options.baseUrl = 'https://phystechlab.ru/rosseti/public/api/';
   }
 
@@ -56,6 +57,7 @@ class PhoneNumberCheker {
   }
 
   void setupInterceptors(String? token) {
+    print('работает инсектоид');
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -67,4 +69,8 @@ class PhoneNumberCheker {
       ),
     );
   }
+}
+
+class SendSolution {
+  final dioSolution = PhoneNumberCheker();
 }

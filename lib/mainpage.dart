@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/Shablons/bottoms_copy.dart';
+import 'package:rosseti_project/Models/bottoms_copy.dart';
 import 'package:rosseti_project/creation_page_start.dart';
 import 'package:rosseti_project/profile.dart';
 import 'package:rosseti_project/projects.dart';
