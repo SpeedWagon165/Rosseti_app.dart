@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rosseti_project/profile.dart';
+import 'package:rosseti_project/repositories/send_solution.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreationShablon extends StatefulWidget {
@@ -29,6 +30,7 @@ class CreationShablon extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<CreationShablon> {
   late final String videoPath;
+  SendSolution solution = SendSolution();
 
   File? image;
 
@@ -98,6 +100,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       onPressed: () {
+                        print(solution.title);
                         Navigator.of(context).push(
                           MaterialPageRoute(
                               builder: (context) => const Status()),

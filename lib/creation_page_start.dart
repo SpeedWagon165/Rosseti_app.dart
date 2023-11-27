@@ -4,6 +4,7 @@ import 'package:rosseti_project/creation_page_1.dart';
 import 'package:rosseti_project/Models/osnova_sozdania.dart';
 import 'package:rosseti_project/logic/project_theme_function.dart';
 import 'package:rosseti_project/profile.dart';
+import 'package:rosseti_project/repositories/send_solution.dart';
 
 class CreationPageStart extends StatefulWidget {
   const CreationPageStart({super.key});
@@ -13,6 +14,9 @@ class CreationPageStart extends StatefulWidget {
 }
 
 class _CreationPageStartState extends State<CreationPageStart> {
+  final TextEditingController textController = TextEditingController();
+  SendSolution solution = SendSolution();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +55,7 @@ class _CreationPageStartState extends State<CreationPageStart> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
                     child: TextField(
+                      controller: textController,
                       decoration: const InputDecoration(
                         labelText: 'Название',
                       ),
@@ -65,6 +70,8 @@ class _CreationPageStartState extends State<CreationPageStart> {
                     height: 58,
                     child: ElevatedButton(
                       onPressed: () {
+                        solution.setTitle(textController.text);
+                        print(solution.title.toString());
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const CreationPage1(),

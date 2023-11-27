@@ -51,9 +51,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          SendSolution();
-        },
+        onPressed: () {},
         heroTag: 'bombitka',
       ),
     );

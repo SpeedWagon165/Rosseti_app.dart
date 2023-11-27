@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/SMS_code.dart';
 import 'package:rosseti_project/mainpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneNumberCheker {
   final Dio dio;
@@ -11,6 +12,8 @@ class PhoneNumberCheker {
     print('Это конструктион');
     dio.options.baseUrl = 'https://phystechlab.ru/rosseti/public/api/';
   }
+
+  final String tokenKey = 'tokenKey';
 
   Future<void> postData(String data, BuildContext context) async {
     print('zavupa pupa');
@@ -40,7 +43,8 @@ class PhoneNumberCheker {
       if (response.statusCode == 200) {
         final responseData = response.data;
         final token = responseData['token'];
-        setupInterceptors(token);
+        saveToken(token);
+        setupInterceptors();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const MainPage(),
@@ -56,8 +60,10 @@ class PhoneNumberCheker {
     return null;
   }
 
-  void setupInterceptors(String? token) {
-    print('работает инсектоид');
+  Future<void> setupInterceptors() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString(tokenKey);
+    print('работает интерсептор');
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -69,8 +75,21 @@ class PhoneNumberCheker {
       ),
     );
   }
-}
 
-class SendSolution {
-  final dioSolution = PhoneNumberCheker();
+  Future<bool> saveToken(String token) async {
+    print('token na meste');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(tokenKey, token);
+  }
+
+  Future<void> removeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(tokenKey);
+  }
+
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString(tokenKey);
+    return token;
+  }
 }

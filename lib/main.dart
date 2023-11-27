@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rosseti_project/mainpage.dart';
 import 'package:rosseti_project/phone_number.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
@@ -12,7 +13,20 @@ class Rosseti extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MyHomePage(),
+      home: FutureBuilder<String?>(
+        future: PhoneNumberCheker().getToken(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Показываем загрузку, пока Future выполняется
+          } else {
+            if (snapshot.hasData && snapshot.data != null) {
+              return const MainPage(); // Если токен получен и не равен null, перейдите на основной экран
+            } else {
+              return const MyHomePage(); // Если токен не получен или равен null, перейдите на домашний экран
+            }
+          }
+        },
+      ),
       debugShowCheckedModeBanner: false,
       title: 'Rosseti',
       theme: ThemeData(

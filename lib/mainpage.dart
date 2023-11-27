@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/Models/bottoms_copy.dart';
 import 'package:rosseti_project/creation_page_start.dart';
+import 'package:rosseti_project/main.dart';
 import 'package:rosseti_project/profile.dart';
 import 'package:rosseti_project/projects.dart';
+import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -22,8 +24,17 @@ class MainPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    width: 34.0,
+                  FloatingActionButton.small(
+                    onPressed: () {
+                      PhoneNumberCheker().removeToken();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MyHomePage(),
+                        ),
+                      );
+                    },
+                    heroTag: 'bomb',
+                    child: const Icon(Icons.arrow_back_outlined),
                   ),
                   Text('seti.inno',
                       style: Theme.of(context).textTheme.headlineMedium),
@@ -37,6 +48,7 @@ class MainPage extends StatelessWidget {
                           ),
                         );
                       },
+                      heroTag: 'bombit',
                       child: Image.asset('assets/sharos.png')),
                 ],
               ),
@@ -61,11 +73,23 @@ class MainPage extends StatelessWidget {
                     );
                   }),
               Bottoms(
-                  text: 'Экспертизы',
-                  logo: 'assets/skills_1.svg',
-                  onPressed: () {
-                    forBottoms('3');
-                  }),
+                text: 'Экспертизы',
+                logo: 'assets/skills_1.svg',
+                onPressed: () {
+                  forBottoms('3');
+                },
+              ),
+              FloatingActionButton(
+                onPressed: () async {
+                  String? token = await PhoneNumberCheker().getToken();
+                  if (token != null) {
+                    print('Ваш токен: $token');
+                  } else {
+                    print('Токен не найден');
+                  }
+                },
+                heroTag: 'bombitka',
+              ),
             ],
           ),
         ),
