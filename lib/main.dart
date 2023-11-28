@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rosseti_project/mainpage.dart';
 import 'package:rosseti_project/phone_number.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
 void main() {
-  runApp(const Rosseti());
+  runApp(
+    const ProviderScope(
+      child: Rosseti(),
+    ),
+  );
 }
 
 class Rosseti extends StatelessWidget {

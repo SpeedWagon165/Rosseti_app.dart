@@ -9,12 +9,13 @@ class ApperBar extends StatelessWidget {
     required this.textLow,
     required this.isConditionMet,
     required this.suretextLow,
-
+    this.statusButton,
   }) : super(key: key);
   final String textLogo;
   final String textLow;
   final bool isConditionMet;
   final bool suretextLow;
+  final dynamic statusButton;
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +34,30 @@ class ApperBar extends StatelessWidget {
                   children: [
                     isConditionMet
                         ? FloatingActionButton.small(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: SvgPicture.asset('assets/Arrow_back.svg'))
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: SvgPicture.asset('assets/Arrow_back.svg'))
                         : const SizedBox(
-                      width: 48.0,
-                    ),
+                            width: 48.0,
+                          ),
                     Text(textLogo,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headlineMedium),
+                        style: Theme.of(context).textTheme.headlineMedium),
                     FloatingActionButton.small(
                       heroTag: "btn1",
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const Status()),
-                        );
+                        if (statusButton != null) {
+                          Navigator.of(context).pop();
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const Status()),
+                          );
+                        }
                       },
                       child: Image.asset('assets/sharos.png'),
                     ),
@@ -64,10 +66,7 @@ class ApperBar extends StatelessWidget {
                 if (suretextLow)
                   Center(
                     child: Text(textLow,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium),
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ),
               ]),
         ]),
