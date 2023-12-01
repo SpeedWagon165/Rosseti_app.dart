@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/SMS_code.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class PhoneNumber extends StatefulWidget {
-  const PhoneNumber({super.key});
+class SMScode extends StatefulWidget {
+  const SMScode({super.key});
 
   @override
-  State<PhoneNumber> createState() => _PhoneNumberState();
+  State<SMScode> createState() => _SMScodeState();
 }
 
-class _PhoneNumberState extends State<PhoneNumber> {
+class _SMScodeState extends State<SMScode> {
   final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        body: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.only(
             bottom: 120.0, top: 0.0, right: 35.0, left: 35.0),
         child: Column(
@@ -29,9 +29,11 @@ class _PhoneNumberState extends State<PhoneNumber> {
                 controller: textController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
-                  labelText: 'Телефон', // Устанавливаем подпись поля
+                  labelText: 'Код из СМС',
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  // Обработка изменения значения поля
+                },
               ),
             ),
             const SizedBox(height: 17),
@@ -39,21 +41,17 @@ class _PhoneNumberState extends State<PhoneNumber> {
               width: MediaQuery.of(context).size.width,
               height: 58,
               child: ElevatedButton(
-                onPressed: () {
-                  PhoneNumberCheker().postData(textController.text, context);
-                },
-                child: const Text(
-                  'Далее',
-                ),
-              ),
+                  onPressed: () {
+                    PhoneNumberCheker().postCode(textController.text, context);
+                    debugPrint(textController.text);
+                  },
+                  child: const Text(
+                    'Готово',
+                  )),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        heroTag: 'bombitka',
-      ),
-    );
+    ));
   }
 }

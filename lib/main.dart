@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rosseti_project/mainpage.dart';
-import 'package:rosseti_project/phone_number.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
+import 'package:rosseti_project/screens/mainpage.dart';
+import 'package:rosseti_project/screens/phone_number.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: Rosseti(),
+    BlocProvider(
+      create: (context) => GlobalBloc(),
+      child: const Rosseti(),
     ),
   );
 }
@@ -94,7 +96,7 @@ class Rosseti extends StatelessWidget {
               width: 0.1, // Толщина границы при неактивном состоянии
             ),
             borderRadius:
-                BorderRadius.circular(30.0), // Задайте радиус углов границы
+            BorderRadius.circular(30.0), // Задайте радиус углов границы
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
@@ -122,7 +124,10 @@ class MyHomePage extends StatelessWidget {
           const SizedBox(height: 30.0),
           Text(
             'seti.inno',
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headlineLarge,
           ),
           const SizedBox(height: 20.0),
           const Text(
@@ -138,7 +143,10 @@ class MyHomePage extends StatelessWidget {
         padding: const EdgeInsets.only(
             bottom: 120.0, top: 0.0, right: 35.0, left: 35.0),
         child: SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           height: 58,
           child: ElevatedButton(
             onPressed: () {

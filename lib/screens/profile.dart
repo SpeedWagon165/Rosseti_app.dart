@@ -35,17 +35,6 @@ class _StatusState extends State<Status> {
           const SizedBox(
             height: 12.0,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35.0),
-            child: Expanded(
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, i) => const ListTile(
-                  title: Text('Bu'),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

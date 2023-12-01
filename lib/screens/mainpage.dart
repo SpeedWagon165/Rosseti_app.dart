@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/Models/bottoms_copy.dart';
-import 'package:rosseti_project/creation_page_start.dart';
+import 'package:rosseti_project/screens/creation_page_start.dart';
 import 'package:rosseti_project/main.dart';
-import 'package:rosseti_project/profile.dart';
-import 'package:rosseti_project/projects.dart';
+import 'package:rosseti_project/screens/profile.dart';
+import 'package:rosseti_project/screens/projects.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class MainPage extends StatelessWidget {

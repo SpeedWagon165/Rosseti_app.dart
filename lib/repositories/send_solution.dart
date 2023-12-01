@@ -7,8 +7,8 @@ import 'package:rosseti_project/repositories/repositories_login.dart';
 class SendSolution {
   PhoneNumberCheker dio = PhoneNumberCheker();
 
-  final titleProvider = StateProvider<String?>((ref) => '');
-  final existingTextProvider = StateProvider<String?>((ref) => '');
+  final titleProvider = 'Biba';
+  final existingTextProvider = '';
   final existingImageProvider = StateProvider<File?>((ref) => File(''));
   final existingVideoProvider = StateProvider<File?>((ref) => File(''));
   final proposedTextProvider = StateProvider<String?>((ref) => '');

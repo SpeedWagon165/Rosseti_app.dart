@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rosseti_project/profile.dart';
+import 'package:rosseti_project/screens/profile.dart';
 
 class ApperBar extends StatelessWidget {
   const ApperBar({

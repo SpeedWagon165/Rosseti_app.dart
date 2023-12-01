@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/SMS_code.dart';
-import 'package:rosseti_project/mainpage.dart';
+import 'package:rosseti_project/screens/SMS_code.dart';
+import 'package:rosseti_project/screens/mainpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneNumberCheker {

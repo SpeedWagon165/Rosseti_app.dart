@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rosseti_project/creation_page_1.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
+import 'package:rosseti_project/screens/creation_page_1.dart';
 import 'package:rosseti_project/Models/osnova_sozdania.dart';
 import 'package:rosseti_project/logic/project_theme_function.dart';
-import 'package:rosseti_project/profile.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rosseti_project/screens/profile.dart';
 import 'package:rosseti_project/repositories/send_solution.dart';
 
-class CreationPageStart extends ConsumerWidget {
+class CreationPageStart extends StatelessWidget {
   CreationPageStart({Key? key}) : super(key: key);
 
   final TextEditingController textController = TextEditingController();
   final SendSolution solution = SendSolution();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -62,13 +62,16 @@ class CreationPageStart extends ConsumerWidget {
                     height: 213,
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     height: 58,
                     child: ElevatedButton(
                       onPressed: () {
-                        ref.read(solution.titleProvider.notifier).state =
-                            textController.text;
-                        print(ref.watch(solution.titleProvider));
+                        BlocProvider.of<GlobalBloc>(context)
+                            .add(UpdateGlobalValue(textController.text));
+
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const CreationPage1(),
