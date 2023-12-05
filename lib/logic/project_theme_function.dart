@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
+import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class TextFielder extends StatefulWidget {
   const TextFielder({super.key});
@@ -9,14 +12,34 @@ class TextFielder extends StatefulWidget {
 }
 
 class _TextFielderState extends State<TextFielder> {
-  final List<String> cities = [
-    'Общее',
-    'Миста Саливан',
-    'Окрошка',
-    'Окорочёк',
-    'Бычий СПИД'
-  ];
-  String selectedCity = '';
+  List<Map<String, dynamic>> topics = [];
+  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+  String selectedTheme = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
+    // Здесь вызываете метод для получения данных с сервера
+    // Например, с использованием Dio
+    try {
+      // Выполняем запрос на сервер
+      final response = await phoneNumberCheker.dio.get('/topics');
+
+      // Парсим полученные данные
+      final responseData = response.data;
+
+      setState(() {
+        topics = List<Map<String, dynamic>>.from(responseData['topics']);
+      });
+    } catch (error) {
+      // Обрабатываем ошибку при получении данных
+      print('Ошибка при загрузке данных: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +60,10 @@ class _TextFielderState extends State<TextFielder> {
                         vertical: 5.0, horizontal: 25.0),
                     child: SvgPicture.asset('assets/Vector.svg'))),
           ),
-          controller: TextEditingController(text: selectedCity),
+          controller: TextEditingController(text: selectedTheme),
           onChanged: (value) {
             setState(() {
-              selectedCity = value;
+              selectedTheme = value;
             });
           },
         ),
@@ -55,14 +78,18 @@ class _TextFielderState extends State<TextFielder> {
         return SizedBox(
           height: 200,
           child: ListView.builder(
-            itemCount: cities.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemCount: topics.length,
+            itemBuilder: (context, index) {
+              final topic = topics[index];
               return ListTile(
-                title: Text(cities[index]),
+                title: Text(topic['title'] ?? ''),
                 onTap: () {
                   setState(() {
-                    selectedCity = cities[index];
+                    selectedTheme = topic['title'] ?? '';
                   });
+                  final selectedId = topic['id'];
+                  BlocProvider.of<TopicBloc>(context)
+                      .add(TopicEvent(selectedId));
                   Navigator.pop(context);
                 },
               );

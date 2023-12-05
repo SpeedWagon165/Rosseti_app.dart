@@ -8,13 +8,14 @@ class CreationPage2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: CreationShablon(
         text: 'Создать',
         textLow: 'Расскажите как надо',
         buttonText: 'Дальше',
         isConditionMet: true,
         next: CreationPage3(),
+        blocType: 2,
       ),
     );
   }

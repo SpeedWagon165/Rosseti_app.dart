@@ -15,6 +15,7 @@ class CreationPage3 extends StatelessWidget {
         buttonText: 'Готово',
         isConditionMet: false,
         next: MainPage(),
+        blocType: 3,
       ),
     );
   }

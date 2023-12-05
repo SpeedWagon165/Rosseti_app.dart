@@ -1,31 +1,42 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class SendSolution {
-  PhoneNumberCheker dio = PhoneNumberCheker();
+class AllBlocksData {
+  final String titleValue;
+  final int topicValue;
+  final String existingTextValue;
+  final File? existingImageValue;
+  final File? existingVideoValue;
+  final String proposedTextValue;
+  final File? proposedImageValue;
+  final File? proposedVideoValue;
+  final String positiveEffectValue;
 
-  final titleProvider = 'Biba';
-  final existingTextProvider = '';
-  final existingImageProvider = StateProvider<File?>((ref) => File(''));
-  final existingVideoProvider = StateProvider<File?>((ref) => File(''));
-  final proposedTextProvider = StateProvider<String?>((ref) => '');
-  final proposedImageProvider = StateProvider<File?>((ref) => File(''));
-  final proposedVideoProvider = StateProvider<File?>((ref) => File(''));
-  final positiveEffectProvider = StateProvider<String?>((ref) => '');
+  AllBlocksData({
+    required this.titleValue,
+    required this.topicValue,
+    required this.existingTextValue,
+    required this.existingImageValue,
+    required this.existingVideoValue,
+    required this.proposedTextValue,
+    required this.proposedImageValue,
+    required this.proposedVideoValue,
+    required this.positiveEffectValue,
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      'title': titleProvider,
-      'existing_solution_text': existingTextProvider,
-      'existing_solution_image': existingImageProvider,
-      'existing_solution_video': existingVideoProvider,
-      'proposed_solution_text': proposedTextProvider,
-      'proposed_solution_image': proposedImageProvider,
-      'proposed_solution_video': proposedVideoProvider,
-      'positive_effect': positiveEffectProvider,
+      'title': titleValue,
+      'existing_solution_text': existingTextValue,
+      'existing_solution_image': existingImageValue,
+      'existing_solution_video': existingVideoValue,
+      'proposed_solution_text': proposedTextValue,
+      'proposed_solution_image': proposedImageValue,
+      'proposed_solution_video': proposedVideoValue,
+      'positive_effect': positiveEffectValue,
     };
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,18 @@ class PhoneNumberCheker {
   final Dio dio;
 
   PhoneNumberCheker() : dio = Dio() {
-    print('Это конструктион');
     dio.options.baseUrl = 'https://phystechlab.ru/rosseti/public/api/';
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await getToken();
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options); // Продолжаем запрос
+        },
+      ),
+    );
   }
 
   final String tokenKey = 'tokenKey';
@@ -74,6 +86,28 @@ class PhoneNumberCheker {
         },
       ),
     );
+  }
+
+  Future<void> sendData(Map<String, dynamic> data) async {
+    try {
+      final response = await dio.post(
+        '/suggestions/store', // Замените на ваш эндпоинт
+        data: jsonEncode(data),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Данные успешно отправлены!');
+      } else {
+        print('Ошибка при отправке данных. Код ошибки: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Ошибка при отправке данных: $error');
+    }
   }
 
   Future<bool> saveToken(String token) async {

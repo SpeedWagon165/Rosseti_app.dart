@@ -7,7 +7,7 @@ class CreationPage1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
         child: CreationShablon(
           text: 'Создать',
@@ -15,6 +15,7 @@ class CreationPage1 extends StatelessWidget {
           buttonText: 'Дальше',
           isConditionMet: true,
           next: CreationPage2(),
+          blocType: 1,
         ),
       ),
     );

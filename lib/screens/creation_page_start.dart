@@ -7,11 +7,17 @@ import 'package:rosseti_project/logic/project_theme_function.dart';
 import 'package:rosseti_project/screens/profile.dart';
 import 'package:rosseti_project/repositories/send_solution.dart';
 
-class CreationPageStart extends StatelessWidget {
+class CreationPageStart extends StatefulWidget {
   CreationPageStart({Key? key}) : super(key: key);
 
+  @override
+  State<CreationPageStart> createState() => _CreationPageStartState();
+}
+
+class _CreationPageStartState extends State<CreationPageStart> {
   final TextEditingController textController = TextEditingController();
-  final SendSolution solution = SendSolution();
+
+  TextFielder textFielder = TextFielder();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,7 @@ class CreationPageStart extends StatelessWidget {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
-                    child: const TextFielder(),
+                    child: TextFielder(),
                   ),
                   const SizedBox(
                     height: 34.0,
@@ -62,15 +68,12 @@ class CreationPageStart extends StatelessWidget {
                     height: 213,
                   ),
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     height: 58,
                     child: ElevatedButton(
                       onPressed: () {
-                        BlocProvider.of<GlobalBloc>(context)
-                            .add(UpdateGlobalValue(textController.text));
+                        BlocProvider.of<TitleBloc>(context)
+                            .add(TitleEvent(textController.text));
 
                         Navigator.of(context).push(
                           MaterialPageRoute(

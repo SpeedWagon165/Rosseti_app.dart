@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
+import 'package:rosseti_project/repositories/repositories_login.dart';
 import 'package:rosseti_project/screens/Video_player_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,27 +15,30 @@ import 'package:rosseti_project/repositories/send_solution.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreationShablon extends StatefulWidget {
-  const CreationShablon({
-    Key? key,
-    required this.text,
-    required this.textLow,
-    required this.next,
-    required this.isConditionMet,
-    required this.buttonText,
-  }) : super(key: key);
+  const CreationShablon(
+      {Key? key,
+      required this.text,
+      required this.textLow,
+      required this.next,
+      required this.isConditionMet,
+      required this.buttonText,
+      required this.blocType})
+      : super(key: key);
   final String text;
   final String buttonText;
   final String textLow;
   final dynamic next;
   final bool isConditionMet;
+  final int blocType;
 
   @override
   State<CreationShablon> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<CreationShablon> {
+  final TextEditingController textController = TextEditingController();
+  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
   late final String videoPath;
-  SendSolution solution = SendSolution();
 
   File? image;
 
@@ -103,10 +108,20 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       onPressed: () {
-                        GlobalState currentState =
-                            BlocProvider.of<GlobalBloc>(context).state;
-                        if (currentState is GlobalInitial) {
-                          print('Current value: ${currentState.initialValue}');
+                        TitleStates currentState =
+                            BlocProvider.of<ExistingTextBloc>(context).state;
+                        if (currentState is ExistingTextState) {
+                          print('Current value: ${currentState.existingText}');
+                        }
+                        TitleStates secondState =
+                            BlocProvider.of<TitleBloc>(context).state;
+                        if (secondState is TitleState) {
+                          print('Current value: ${secondState.title}');
+                        }
+                        TitleStates firstState =
+                            BlocProvider.of<ExistingImageBloc>(context).state;
+                        if (firstState is ExistingImageState) {
+                          print('Current value: ${firstState.existingImage}');
                         }
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -127,10 +142,11 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
-                    child: const TextField(
+                    child: TextField(
+                      controller: textController,
                       minLines: 20,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -240,7 +256,110 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
               width: MediaQuery.of(context).size.width,
               height: 58,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (widget.blocType == 1) {
+                    BlocProvider.of<ExistingTextBloc>(context)
+                        .add(ExistingTextEvent(textController.text));
+                    BlocProvider.of<ExistingImageBloc>(context)
+                        .add(ExistingImageEvent(image));
+                    BlocProvider.of<ExistingVideoBloc>(context)
+                        .add(ExistingVideoEvent(video));
+                  }
+                  if (widget.blocType == 2) {
+                    BlocProvider.of<ProposedTextBloc>(context)
+                        .add(ProposedTextEvent(textController.text));
+                    BlocProvider.of<ProposedImageBloc>(context)
+                        .add(ProposedImageEvent(image));
+                    BlocProvider.of<ProposedVideoBloc>(context)
+                        .add(ProposedVideoEvent(video));
+                  }
+                  if (widget.blocType == 3) {
+                    BlocProvider.of<PositiveEffectBloc>(context)
+                        .add(PositiveEffectEvent(textController.text));
+                    final titleBlocState =
+                        BlocProvider.of<TitleBloc>(context).state;
+                    final topicBlocState =
+                        BlocProvider.of<TopicBloc>(context).state;
+                    final existingTextBlocState =
+                        BlocProvider.of<ExistingTextBloc>(context).state;
+                    final existingImageBlocState =
+                        BlocProvider.of<ExistingImageBloc>(context).state;
+                    final existingVideoBlocState =
+                        BlocProvider.of<ExistingVideoBloc>(context).state;
+                    final proposedTextBlocState =
+                        BlocProvider.of<ProposedTextBloc>(context).state;
+                    final proposedImageBlocState =
+                        BlocProvider.of<ProposedImageBloc>(context).state;
+                    final proposedVideoBlocState =
+                        BlocProvider.of<ProposedVideoBloc>(context).state;
+                    final positiveEffectBlocState =
+                        BlocProvider.of<PositiveEffectBloc>(context).state;
+
+                    final allBlocksData = AllBlocksData(
+                      titleValue: (titleBlocState is TitleState)
+                          ? titleBlocState.title
+                          : '',
+                      topicValue: (topicBlocState is TopicState)
+                          ? topicBlocState.topic
+                          : 0,
+                      existingTextValue:
+                          (existingTextBlocState is ExistingTextState)
+                              ? existingTextBlocState.existingText
+                              : '',
+                      existingImageValue:
+                          (existingImageBlocState is ExistingImageState)
+                              ? existingImageBlocState.existingImage
+                              : null,
+                      existingVideoValue:
+                          (existingVideoBlocState is ExistingVideoState)
+                              ? existingVideoBlocState.existingVideo
+                              : null,
+                      proposedTextValue:
+                          (proposedTextBlocState is ProposedTextState)
+                              ? proposedTextBlocState.proposedText
+                              : '',
+                      proposedImageValue:
+                          (proposedImageBlocState is ProposedImageState)
+                              ? proposedImageBlocState.proposedImage
+                              : null,
+                      proposedVideoValue:
+                          (proposedVideoBlocState is ProposedVideoState)
+                              ? proposedVideoBlocState.proposedVideo
+                              : null,
+                      positiveEffectValue:
+                          (positiveEffectBlocState is PositiveEffectState)
+                              ? positiveEffectBlocState.positiveEffect
+                              : '',
+                    );
+                    final formData = FormData.fromMap({
+                      'title': allBlocksData.titleValue,
+                      'topic_id': allBlocksData.topicValue,
+                      'existing_solution_text': allBlocksData.existingTextValue,
+                      'existing_solution_image': await MultipartFile.fromFile(
+                        allBlocksData.existingImageValue!.path,
+                        filename: 'existing_image.jpg',
+                      ),
+                      'existing_solution_video': await MultipartFile.fromFile(
+                        allBlocksData.existingVideoValue!.path,
+                        filename: 'existing_video.jpg',
+                      ),
+                      'proposed_solution_text': allBlocksData.proposedTextValue,
+                      'proposed_solution_image': await MultipartFile.fromFile(
+                        allBlocksData.proposedImageValue!.path,
+                        filename: 'proposed_image.jpg',
+                      ),
+                      'proposed_solution_video': await MultipartFile.fromFile(
+                        allBlocksData.proposedVideoValue!.path,
+                        filename: 'proposed_video.jpg',
+                      ),
+                      'positive_effect': allBlocksData.positiveEffectValue,
+                    });
+                    final dataToSend = Map<String, dynamic>.fromEntries(
+                      formData.fields.map((e) => MapEntry(e.key, e.value)),
+                    );
+
+                    phoneNumberCheker.sendData(dataToSend);
+                  }
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => widget.next));
                 },
