@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/screens/creation_page_1.dart';
-import 'package:rosseti_project/Models/osnova_sozdania.dart';
+import 'package:rosseti_project/Models/base_appbar.dart';
 import 'package:rosseti_project/logic/project_theme_function.dart';
-import 'package:rosseti_project/screens/profile.dart';
-import 'package:rosseti_project/repositories/send_solution.dart';
 
 class CreationPageStart extends StatefulWidget {
-  CreationPageStart({Key? key}) : super(key: key);
+  const CreationPageStart({Key? key}) : super(key: key);
 
   @override
   State<CreationPageStart> createState() => _CreationPageStartState();
@@ -17,7 +15,13 @@ class CreationPageStart extends StatefulWidget {
 class _CreationPageStartState extends State<CreationPageStart> {
   final TextEditingController textController = TextEditingController();
 
-  TextFielder textFielder = TextFielder();
+  @override
+  void initState() {
+    const TextFielder();
+    super.initState();
+  }
+
+  TextFielder textFielder = const TextFielder();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class _CreationPageStartState extends State<CreationPageStart> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
-                    child: TextFielder(),
+                    child: const TextFielder(),
                   ),
                   const SizedBox(
                     height: 34.0,

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class VideoPlayerScreen extends StatefulWidget {
   final String videoPath;
 
-  VideoPlayerScreen(this.videoPath);
+  const VideoPlayerScreen(this.videoPath, {super.key});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -28,7 +28,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Воспроизведение видео'),
+        title: const Text('Воспроизведение видео'),
       ),
       body: Center(
         child: _controller.value.isInitialized
@@ -36,7 +36,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 aspectRatio: _controller.value.aspectRatio,
                 child: VideoPlayer(_controller),
               )
-            : CircularProgressIndicator(),
+            : const CircularProgressIndicator(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/Models/bottoms_copy.dart';
+import 'package:rosseti_project/repositories/profile_json.dart';
 import 'package:rosseti_project/screens/creation_page_start.dart';
 import 'package:rosseti_project/main.dart';
 import 'package:rosseti_project/screens/profile.dart';
 import 'package:rosseti_project/screens/projects.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +51,51 @@ class MainPage extends StatelessWidget {
                   FloatingActionButton.small(
                       backgroundColor: Colors.transparent,
                       elevation: 0,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const Status(),
-                          ),
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return const Dialog(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
                         );
+
+                        final UserInfo? info =
+                            await phoneNumberCheker.profileInfo();
+
+                        Navigator.pop(
+                            context); // Закрываем диалоговое окно загрузки
+
+                        if (info != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Status(info: info),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Ошибка загрузки'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       },
                       heroTag: 'bombit',
                       child: Image.asset('assets/sharos.png')),
@@ -80,17 +127,6 @@ class MainPage extends StatelessWidget {
                 onPressed: () {
                   forBottoms('3');
                 },
-              ),
-              FloatingActionButton(
-                onPressed: () async {
-                  String? token = await PhoneNumberCheker().getToken();
-                  if (token != null) {
-                    print('Ваш токен: $token');
-                  } else {
-                    print('Токен не найден');
-                  }
-                },
-                heroTag: 'bombitka',
               ),
             ],
           ),

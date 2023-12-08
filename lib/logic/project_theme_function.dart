@@ -19,26 +19,13 @@ class _TextFielderState extends State<TextFielder> {
   @override
   void initState() {
     super.initState();
-    fetchDataFromServer();
+    phoneNumberCheker.fetchDataFromServer(updateState);
   }
 
-  Future<void> fetchDataFromServer() async {
-    // Здесь вызываете метод для получения данных с сервера
-    // Например, с использованием Dio
-    try {
-      // Выполняем запрос на сервер
-      final response = await phoneNumberCheker.dio.get('/topics');
-
-      // Парсим полученные данные
-      final responseData = response.data;
-
-      setState(() {
-        topics = List<Map<String, dynamic>>.from(responseData['topics']);
-      });
-    } catch (error) {
-      // Обрабатываем ошибку при получении данных
-      print('Ошибка при загрузке данных: $error');
-    }
+  void updateState(List<Map<String, dynamic>> newTopics) {
+    setState(() {
+      topics = newTopics;
+    });
   }
 
   @override

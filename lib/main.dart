@@ -67,6 +67,12 @@ class Rosseti extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            fontFamily: 'ABeeZee',
+            color: Color(0xFF205691),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
           headlineLarge: TextStyle(
             fontFamily: 'ABeeZee',
             color: Color(0xFF205691),
@@ -84,6 +90,12 @@ class Rosseti extends StatelessWidget {
             color: Color(0xFF205691),
             fontWeight: FontWeight.w400,
             fontSize: 14,
+          ),
+          headlineSmall: TextStyle(
+            fontFamily: 'ABeeZee',
+            color: Color(0xFF205691),
+            fontWeight: FontWeight.w400,
+            fontSize: 27,
           ),
           headlineMedium: TextStyle(
             fontFamily: 'ABeeZee',

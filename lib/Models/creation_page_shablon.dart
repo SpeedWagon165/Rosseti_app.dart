@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
+import 'package:rosseti_project/repositories/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 import 'package:rosseti_project/screens/Video_player_example.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,15 +16,15 @@ import 'package:rosseti_project/repositories/send_solution.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreationShablon extends StatefulWidget {
-  const CreationShablon(
-      {Key? key,
-      required this.text,
-      required this.textLow,
-      required this.next,
-      required this.isConditionMet,
-      required this.buttonText,
-      required this.blocType})
-      : super(key: key);
+  const CreationShablon({
+    Key? key,
+    required this.text,
+    required this.textLow,
+    required this.next,
+    required this.isConditionMet,
+    required this.buttonText,
+    required this.blocType,
+  }) : super(key: key);
   final String text;
   final String buttonText;
   final String textLow;
@@ -107,26 +108,19 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       heroTag: "btn1",
                       backgroundColor: Colors.transparent,
                       elevation: 0,
-                      onPressed: () {
-                        TitleStates currentState =
-                            BlocProvider.of<ExistingTextBloc>(context).state;
-                        if (currentState is ExistingTextState) {
-                          print('Current value: ${currentState.existingText}');
+                      onPressed: () async {
+                        final UserInfo? info =
+                            await phoneNumberCheker.profileInfo();
+                        if (info != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Status(info: info),
+                            ),
+                          );
+                        } else {
+                          const Text("Ошибка загрузки");
+                          // Обработка случая, если информация о пользователе недоступна
                         }
-                        TitleStates secondState =
-                            BlocProvider.of<TitleBloc>(context).state;
-                        if (secondState is TitleState) {
-                          print('Current value: ${secondState.title}');
-                        }
-                        TitleStates firstState =
-                            BlocProvider.of<ExistingImageBloc>(context).state;
-                        if (firstState is ExistingImageState) {
-                          print('Current value: ${firstState.existingImage}');
-                        }
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const Status()),
-                        );
                       },
                       child: Image.asset('assets/sharos.png'),
                     ),

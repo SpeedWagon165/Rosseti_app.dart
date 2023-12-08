@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/screens/SMS_code.dart';
+import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/screens/sms_code.dart';
 import 'package:rosseti_project/screens/mainpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,6 +108,37 @@ class PhoneNumberCheker {
       }
     } catch (error) {
       print('Ошибка при отправке данных: $error');
+    }
+  }
+
+  Future<UserInfo?> profileInfo() async {
+    try {
+      final response = await dio.get('/user');
+      final responseData = response.data;
+
+      if (responseData != null) {
+        print(responseData);
+        return UserInfo.fromJson(responseData);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      debugPrint('Ошибка при загрузке данных: $error');
+      return null;
+    }
+  }
+
+  Future<void> fetchDataFromServer(
+      Function(List<Map<String, dynamic>>) onUpdate) async {
+    try {
+      final response = await dio.get('/topics');
+      final responseData = response.data;
+
+      List<Map<String, dynamic>> newTopics =
+          List<Map<String, dynamic>>.from(responseData['topics']);
+      onUpdate(newTopics);
+    } catch (error) {
+      print('Ошибка при загрузке данных: $error');
     }
   }
 

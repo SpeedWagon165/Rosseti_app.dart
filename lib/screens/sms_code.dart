@@ -41,13 +41,14 @@ class _SMScodeState extends State<SMScode> {
               width: MediaQuery.of(context).size.width,
               height: 58,
               child: ElevatedButton(
-                  onPressed: () {
-                    PhoneNumberCheker().postCode(textController.text, context);
-                    debugPrint(textController.text);
-                  },
-                  child: const Text(
-                    'Готово',
-                  )),
+                onPressed: () {
+                  PhoneNumberCheker().postCode(textController.text, context);
+                  debugPrint(textController.text);
+                },
+                child: const Text(
+                  'Готово',
+                ),
+              ),
             ),
           ],
         ),
