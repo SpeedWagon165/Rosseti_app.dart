@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/Models/base_appbar.dart';
-import 'package:rosseti_project/Models/project_botton_copy.dart';
+import 'package:rosseti_project/widgets/base_appbar.dart';
+import 'package:rosseti_project/widgets/project_botton_copy.dart';
 
-class Projects extends StatelessWidget {
-  const Projects({super.key});
+class ProjectsPage extends StatelessWidget {
+  const ProjectsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          const ApperBar(
+          const BaseAppBar(
             textLogo: 'Проекты',
             textLow: 'Боба',
             isConditionMet: true,
@@ -23,7 +23,7 @@ class Projects extends StatelessWidget {
               children: [
                 ProjectBottoms(
                   projectName: 'Название проекта asdasdasdasdasdasd',
-                  logo: 'assets/create_1.svg',
+                  logo: 'assets/create_main_page.svg',
                   onPressed: () {
                     print('2');
                   },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/screens/creation_page_3.dart';
 
-import 'package:rosseti_project/Models/creation_page_shablon.dart';
+import 'package:rosseti_project/widgets/creation_page_layout.dart';
 
 class CreationPage2 extends StatelessWidget {
   const CreationPage2({super.key});

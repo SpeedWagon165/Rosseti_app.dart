@@ -1,17 +1,16 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
-import 'package:rosseti_project/screens/sms_code.dart';
-import 'package:rosseti_project/screens/mainpage.dart';
+import 'package:rosseti_project/models/profile_json.dart';
+import 'package:rosseti_project/screens/sms_code_page.dart';
+import 'package:rosseti_project/screens/mainpage_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PhoneNumberCheker {
+class DioBase {
   final Dio dio;
 
-  PhoneNumberCheker() : dio = Dio() {
+  DioBase() : dio = Dio() {
     dio.options.baseUrl = 'https://phystechlab.ru/rosseti/public/api/';
     dio.interceptors.add(
       InterceptorsWrapper(
@@ -29,7 +28,6 @@ class PhoneNumberCheker {
   final String tokenKey = 'tokenKey';
 
   Future<void> postData(String data, BuildContext context) async {
-    print('zavupa pupa');
     try {
       final response = await dio.post('auth/phone', data: data);
       if (response.statusCode == 200) {
@@ -39,18 +37,17 @@ class PhoneNumberCheker {
           debugPrint(responseData.toString());
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const SMScode(),
+              builder: (context) => const SmsCodePage(),
             ),
           );
         }
       }
     } catch (e) {
-      print(e);
+      debugPrint(e as String?);
     }
   }
 
-  Future<String?> postCode(String code, BuildContext context) async {
-    print('zavupa coda');
+  Future<String?> postPhoneCode(String code, BuildContext context) async {
     try {
       final response = await dio.post('auth/verify-code', data: {"code": code});
       if (response.statusCode == 200) {
@@ -68,7 +65,7 @@ class PhoneNumberCheker {
         return null;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e as String?);
     }
     return null;
   }
@@ -76,7 +73,6 @@ class PhoneNumberCheker {
   Future<void> setupInterceptors() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString(tokenKey);
-    print('работает интерсептор');
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -102,12 +98,13 @@ class PhoneNumberCheker {
       );
 
       if (response.statusCode == 200) {
-        print('Данные успешно отправлены!');
+        debugPrint('Данные успешно отправлены!');
       } else {
-        print('Ошибка при отправке данных. Код ошибки: ${response.statusCode}');
+        debugPrint(
+            'Ошибка при отправке данных. Код ошибки: ${response.statusCode}');
       }
     } catch (error) {
-      print('Ошибка при отправке данных: $error');
+      debugPrint('Ошибка при отправке данных: $error');
     }
   }
 
@@ -117,7 +114,7 @@ class PhoneNumberCheker {
       final responseData = response.data;
 
       if (responseData != null) {
-        print(responseData);
+        debugPrint(responseData);
         return UserInfo.fromJson(responseData);
       } else {
         return null;
@@ -138,12 +135,12 @@ class PhoneNumberCheker {
           List<Map<String, dynamic>>.from(responseData['topics']);
       onUpdate(newTopics);
     } catch (error) {
-      print('Ошибка при загрузке данных: $error');
+      debugPrint('Ошибка при загрузке данных: $error');
     }
   }
 
   Future<bool> saveToken(String token) async {
-    print('token na meste');
+    debugPrint('token here');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString(tokenKey, token);
   }

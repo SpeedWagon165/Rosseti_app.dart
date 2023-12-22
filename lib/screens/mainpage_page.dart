@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
-import 'package:rosseti_project/Models/bottoms_copy.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/screens/registration_page.dart';
+import 'package:rosseti_project/widgets/bottoms_copy.dart';
+import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/screens/creation_page_start.dart';
 import 'package:rosseti_project/main.dart';
-import 'package:rosseti_project/screens/profile.dart';
-import 'package:rosseti_project/screens/projects.dart';
+import 'package:rosseti_project/screens/profile_page.dart';
+import 'package:rosseti_project/screens/projects_page.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+  DioBase dioBase = DioBase();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   FloatingActionButton.small(
                     onPressed: () {
-                      PhoneNumberCheker().removeToken();
+                      DioBase().removeToken();
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const MyHomePage(),
@@ -66,8 +65,7 @@ class _MainPageState extends State<MainPage> {
                           },
                         );
 
-                        final UserInfo? info =
-                            await phoneNumberCheker.profileInfo();
+                        final UserInfo? info = await dioBase.profileInfo();
 
                         Navigator.pop(
                             context); // Закрываем диалоговое окно загрузки
@@ -98,32 +96,32 @@ class _MainPageState extends State<MainPage> {
                         }
                       },
                       heroTag: 'bombit',
-                      child: Image.asset('assets/sharos.png')),
+                      child: Image.asset('assets/logo_rosseti.png')),
                 ],
               ),
-              Bottoms(
+              ManePageBottoms(
                   text: 'Создать предложение',
-                  logo: 'assets/create_1.svg',
+                  logo: 'assets/create_main_page.svg',
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => CreationPageStart(),
+                        builder: (context) => const CreationPageStart(),
                       ),
                     );
                   }),
-              Bottoms(
+              ManePageBottoms(
                   text: 'Заявки',
-                  logo: 'assets/idea_1.svg',
+                  logo: 'assets/idea_main_page.svg',
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => Projects(),
+                        builder: (context) => const ProjectsPage(),
                       ),
                     );
                   }),
-              Bottoms(
+              ManePageBottoms(
                 text: 'Экспертизы',
-                logo: 'assets/skills_1.svg',
+                logo: 'assets/skills_main_page.svg',
                 onPressed: () {
                   forBottoms('3');
                 },
@@ -136,6 +134,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   void forBottoms(String text) {
-    print(text);
+    debugPrint(text);
   }
 }

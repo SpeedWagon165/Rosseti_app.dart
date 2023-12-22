@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
-import 'package:rosseti_project/screens/profile.dart';
+import 'package:rosseti_project/screens/profile_page.dart';
 
-class ApperBar extends StatefulWidget {
-  const ApperBar({
+class BaseAppBar extends StatefulWidget {
+  const BaseAppBar({
     Key? key,
     required this.textLogo,
     required this.textLow,
@@ -20,11 +20,11 @@ class ApperBar extends StatefulWidget {
   final dynamic statusButton;
 
   @override
-  State<ApperBar> createState() => _ApperBarState();
+  State<BaseAppBar> createState() => _BaseAppBarState();
 }
 
-class _ApperBarState extends State<ApperBar> {
-  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+class _BaseAppBarState extends State<BaseAppBar> {
+  DioBase dioBase = DioBase();
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +62,7 @@ class _ApperBarState extends State<ApperBar> {
                         if (widget.statusButton != null) {
                           Navigator.of(context).pop();
                         } else {
-                          final UserInfo? info =
-                              await phoneNumberCheker.profileInfo();
+                          final UserInfo? info = await dioBase.profileInfo();
                           if (info != null) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -76,7 +75,7 @@ class _ApperBarState extends State<ApperBar> {
                           }
                         }
                       },
-                      child: Image.asset('assets/sharos.png'),
+                      child: Image.asset('assets/logo_rosseti.png'),
                     ),
                   ],
                 ),

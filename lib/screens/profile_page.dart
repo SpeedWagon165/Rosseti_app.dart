@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rosseti_project/Models/base_appbar.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/widgets/base_appbar.dart';
+import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class Status extends StatelessWidget {
@@ -15,7 +15,7 @@ class Status extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100.0),
-        child: ApperBar(
+        child: BaseAppBar(
           suretextLow: false,
           isConditionMet: false,
           textLow: 'Расскажите о предложении',
@@ -30,7 +30,7 @@ class Status extends StatelessWidget {
             height: 150,
             width: 150,
             child: SvgPicture.asset(
-              'assets/crowns_1.svg',
+              'assets/crown_profile.svg',
               fit: BoxFit.contain,
               alignment: Alignment.center,
             ),

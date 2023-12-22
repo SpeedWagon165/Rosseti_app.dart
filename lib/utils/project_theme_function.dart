@@ -13,7 +13,7 @@ class TextFielder extends StatefulWidget {
 
 class _TextFielderState extends State<TextFielder> {
   List<Map<String, dynamic>> topics = [];
-  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+  DioBase phoneNumberCheker = DioBase();
   String selectedTheme = '';
 
   @override
@@ -45,7 +45,8 @@ class _TextFielderState extends State<TextFielder> {
                 child: Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 25.0),
-                    child: SvgPicture.asset('assets/Vector.svg'))),
+                    child:
+                        SvgPicture.asset('assets/arrow_for_theme_choise.svg'))),
           ),
           controller: TextEditingController(text: selectedTheme),
           onChanged: (value) {

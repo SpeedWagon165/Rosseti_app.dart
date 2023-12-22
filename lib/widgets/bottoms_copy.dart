@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Bottoms extends StatelessWidget {
-  const Bottoms({
+class ManePageBottoms extends StatelessWidget {
+  const ManePageBottoms({
     Key? key,
     required this.text,
     required this.logo,

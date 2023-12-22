@@ -3,16 +3,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
-import 'package:rosseti_project/screens/Video_player_example.dart';
+import 'package:rosseti_project/screens/video_player_example_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rosseti_project/screens/profile.dart';
-import 'package:rosseti_project/repositories/send_solution.dart';
+import 'package:rosseti_project/screens/profile_page.dart';
+import 'package:rosseti_project/models/json_response_convert.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreationShablon extends StatefulWidget {
@@ -38,7 +38,7 @@ class CreationShablon extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<CreationShablon> {
   final TextEditingController textController = TextEditingController();
-  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+  DioBase dioBase = DioBase();
   late final String videoPath;
 
   File? image;
@@ -109,8 +109,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       onPressed: () async {
-                        final UserInfo? info =
-                            await phoneNumberCheker.profileInfo();
+                        final UserInfo? info = await dioBase.profileInfo();
                         if (info != null) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -122,7 +121,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                           // Обработка случая, если информация о пользователе недоступна
                         }
                       },
-                      child: Image.asset('assets/sharos.png'),
+                      child: Image.asset('assets/logo_rosseti.png'),
                     ),
                   ],
                 ),
@@ -223,7 +222,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                           onPressed: () {
                             pickImage(ImageSource.gallery);
                           },
-                          child: SvgPicture.asset('assets/take 1.svg'),
+                          child: SvgPicture.asset('assets/choose_photo.svg'),
                         ),
                       ),
                     if (widget.isConditionMet)
@@ -236,7 +235,8 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                           onPressed: () {
                             pickVideo(ImageSource.gallery);
                           },
-                          child: SvgPicture.asset('assets/video-player 1.svg'),
+                          child:
+                              SvgPicture.asset('assets/video_player_icon.svg'),
                         ),
                       ),
                   ],
@@ -352,7 +352,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       formData.fields.map((e) => MapEntry(e.key, e.value)),
                     );
 
-                    phoneNumberCheker.sendData(dataToSend);
+                    dioBase.sendData(dataToSend);
                   }
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => widget.next));

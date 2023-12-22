@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class PhoneNumber extends StatefulWidget {
-  const PhoneNumber({super.key});
+class PhoneNumberPage extends StatefulWidget {
+  const PhoneNumberPage({super.key});
 
   @override
-  State<PhoneNumber> createState() => _PhoneNumberState();
+  State<PhoneNumberPage> createState() => _PhoneNumberPageState();
 }
 
-class _PhoneNumberState extends State<PhoneNumber> {
+class _PhoneNumberPageState extends State<PhoneNumberPage> {
   final TextEditingController textController = TextEditingController();
 
   @override
@@ -40,7 +40,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
                 height: 58,
                 child: ElevatedButton(
                   onPressed: () {
-                    PhoneNumberCheker().postData(textController.text, context);
+                    DioBase().postData(textController.text, context);
                   },
                   child: const Text(
                     'Далее',

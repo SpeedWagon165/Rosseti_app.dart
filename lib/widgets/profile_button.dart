@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rosseti_project/repositories/profile_json.dart';
+import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
-import 'package:rosseti_project/screens/profile.dart';
+import 'package:rosseti_project/screens/profile_page.dart';
 
 class ProfileButton extends StatefulWidget {
   const ProfileButton({Key? key, required this.statusButton}) : super(key: key);
@@ -13,7 +12,7 @@ class ProfileButton extends StatefulWidget {
 }
 
 class _ProfileButtonState extends State<ProfileButton> {
-  PhoneNumberCheker phoneNumberCheker = PhoneNumberCheker();
+  DioBase dioBase = DioBase();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class _ProfileButtonState extends State<ProfileButton> {
         if (widget.statusButton != null) {
           Navigator.of(context).pop();
         } else {
-          final UserInfo? info = await phoneNumberCheker.profileInfo();
+          final UserInfo? info = await dioBase.profileInfo();
           if (info != null) {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -38,7 +37,7 @@ class _ProfileButtonState extends State<ProfileButton> {
           }
         }
       },
-      child: Image.asset('assets/sharos.png'),
+      child: Image.asset('assets/logo_rosseti.png'),
     );
   }
 }

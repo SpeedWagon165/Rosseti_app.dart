@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class SMScode extends StatefulWidget {
-  const SMScode({super.key});
+class SmsCodePage extends StatefulWidget {
+  const SmsCodePage({super.key});
 
   @override
-  State<SMScode> createState() => _SMScodeState();
+  State<SmsCodePage> createState() => _SmsCodePageState();
 }
 
-class _SMScodeState extends State<SMScode> {
+class _SmsCodePageState extends State<SmsCodePage> {
   final TextEditingController textController = TextEditingController();
 
   @override
@@ -42,7 +42,7 @@ class _SMScodeState extends State<SMScode> {
               height: 58,
               child: ElevatedButton(
                 onPressed: () {
-                  PhoneNumberCheker().postCode(textController.text, context);
+                  DioBase().postPhoneCode(textController.text, context);
                   debugPrint(textController.text);
                 },
                 child: const Text(
