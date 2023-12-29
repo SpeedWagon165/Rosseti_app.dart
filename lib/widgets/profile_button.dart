@@ -37,7 +37,7 @@ class _ProfileButtonState extends State<ProfileButton> {
           }
         }
       },
-      child: Image.asset('assets/logo_rosseti.png'),
+      child: Image.asset('assets/images/logo_rosseti.png'),
     );
   }
 }

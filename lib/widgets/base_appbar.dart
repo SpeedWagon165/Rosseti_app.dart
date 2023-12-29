@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
@@ -10,13 +11,13 @@ class BaseAppBar extends StatefulWidget {
     required this.textLogo,
     required this.textLow,
     required this.isConditionMet,
-    required this.suretextLow,
+    required this.sureTextLow,
     this.statusButton,
   }) : super(key: key);
   final String textLogo;
   final String textLow;
   final bool isConditionMet;
-  final bool suretextLow;
+  final bool sureTextLow;
   final dynamic statusButton;
 
   @override
@@ -29,13 +30,13 @@ class _BaseAppBarState extends State<BaseAppBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 35.0),
+      padding: EdgeInsets.symmetric(horizontal: (35.0 * 2.91).h),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(children: [
-          const SizedBox(height: 68),
+          SizedBox(height: (68 * 2.91).h),
           Wrap(
-              runSpacing: 17.0,
+              runSpacing: (17.0 * 2.91).h,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Row(
@@ -48,9 +49,10 @@ class _BaseAppBarState extends State<BaseAppBar> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: SvgPicture.asset('assets/Arrow_back.svg'))
-                        : const SizedBox(
-                            width: 48.0,
+                            child: SvgPicture.asset(
+                                'assets/images/arrow_back.svg'))
+                        : SizedBox(
+                            width: (48.0 * 2.91).h,
                           ),
                     Text(widget.textLogo,
                         style: Theme.of(context).textTheme.headlineMedium),
@@ -75,11 +77,11 @@ class _BaseAppBarState extends State<BaseAppBar> {
                           }
                         }
                       },
-                      child: Image.asset('assets/logo_rosseti.png'),
+                      child: Image.asset('assets/images/logo_rosseti.png'),
                     ),
                   ],
                 ),
-                if (widget.suretextLow)
+                if (widget.sureTextLow)
                   Center(
                     child: Text(widget.textLow,
                         style: Theme.of(context).textTheme.bodyMedium),

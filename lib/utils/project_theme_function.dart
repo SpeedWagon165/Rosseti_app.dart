@@ -1,31 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 
-class TextFielder extends StatefulWidget {
-  const TextFielder({super.key});
+class ChoiceTopic extends StatefulWidget {
+  final Function(int) onTopicSelected;
+
+  const ChoiceTopic({Key? key, required this.onTopicSelected})
+      : super(key: key);
 
   @override
-  State<TextFielder> createState() => _TextFielderState();
+  State<ChoiceTopic> createState() => _ChoiceTopicState();
 }
 
-class _TextFielderState extends State<TextFielder> {
+class _ChoiceTopicState extends State<ChoiceTopic> {
   List<Map<String, dynamic>> topics = [];
-  DioBase phoneNumberCheker = DioBase();
+  DioBase dioBase = DioBase();
   String selectedTheme = '';
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final response = await dioBase.dio.get('/topics');
+      final responseData = response.data;
+
+      List<Map<String, dynamic>> newTopics =
+          List<Map<String, dynamic>>.from(responseData['topics']);
+
+      setState(() {
+        topics = newTopics;
+      });
+    } catch (error) {
+      debugPrint('Ошибка при загрузке данных: $error');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    phoneNumberCheker.fetchDataFromServer(updateState);
-  }
-
-  void updateState(List<Map<String, dynamic>> newTopics) {
-    setState(() {
-      topics = newTopics;
-    });
+    fetchDataFromServer();
   }
 
   @override
@@ -43,10 +57,10 @@ class _TextFielderState extends State<TextFielder> {
                   _openCitySelection(context);
                 },
                 child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 25.0),
-                    child:
-                        SvgPicture.asset('assets/arrow_for_theme_choise.svg'))),
+                    padding: EdgeInsets.symmetric(
+                        vertical: (5.0 * 2.91).h, horizontal: 25.0),
+                    child: SvgPicture.asset(
+                        'assets/images/arrow_for_theme_choise.svg'))),
           ),
           controller: TextEditingController(text: selectedTheme),
           onChanged: (value) {
@@ -64,7 +78,7 @@ class _TextFielderState extends State<TextFielder> {
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 200,
+          height: (200 * 2.91).h,
           child: ListView.builder(
             itemCount: topics.length,
             itemBuilder: (context, index) {
@@ -76,8 +90,7 @@ class _TextFielderState extends State<TextFielder> {
                     selectedTheme = topic['title'] ?? '';
                   });
                   final selectedId = topic['id'];
-                  BlocProvider.of<TopicBloc>(context)
-                      .add(TopicEvent(selectedId));
+                  widget.onTopicSelected(selectedId);
                   Navigator.pop(context);
                 },
               );

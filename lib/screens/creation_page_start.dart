@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/screens/creation_page_1.dart';
 import 'package:rosseti_project/widgets/base_appbar.dart';
@@ -14,14 +15,12 @@ class CreationPageStart extends StatefulWidget {
 
 class _CreationPageStartState extends State<CreationPageStart> {
   final TextEditingController textController = TextEditingController();
+  int selectedTopicId = -1;
 
   @override
   void initState() {
-    const TextFielder();
     super.initState();
   }
-
-  TextFielder textFielder = const TextFielder();
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +30,17 @@ class _CreationPageStartState extends State<CreationPageStart> {
         child: Column(
           children: [
             const BaseAppBar(
-              suretextLow: true,
+              sureTextLow: true,
               isConditionMet: true,
               textLow: 'Расскажите о предложении',
               textLogo: 'Создать',
             ),
-            const SizedBox(
-              height: 34.0,
+            SizedBox(
+              height: (34.0 * 2.91).h,
             ),
             const Text('Выберите тему и название'),
-            const SizedBox(
-              height: 34.0,
+            SizedBox(
+              height: (34.0 * 2.91).h,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -51,10 +50,16 @@ class _CreationPageStartState extends State<CreationPageStart> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
-                    child: const TextFielder(),
+                    child: ChoiceTopic(
+                      onTopicSelected: (int id) {
+                        setState(() {
+                          selectedTopicId = id;
+                        });
+                      },
+                    ),
                   ),
-                  const SizedBox(
-                    height: 34.0,
+                  SizedBox(
+                    height: (34.0 * 2.91).h,
                   ),
                   Material(
                     elevation: 4,
@@ -68,12 +73,12 @@ class _CreationPageStartState extends State<CreationPageStart> {
                       onChanged: (value) {},
                     ),
                   ),
-                  const SizedBox(
-                    height: 213,
+                  SizedBox(
+                    height: (213 * 2.91).h,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 58,
+                    height: (58 * 2.91).h,
                     child: ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<TitleBloc>(context)
@@ -81,7 +86,10 @@ class _CreationPageStartState extends State<CreationPageStart> {
 
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const CreationPage1(),
+                            builder: (context) => CreationPage1(
+                              title: textController.text,
+                              topicId: selectedTopicId,
+                            ),
                           ),
                         );
                       },

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/models/profile_json.dart';
@@ -87,9 +88,9 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            const SizedBox(height: 68),
+            SizedBox(height: (68 * 2.91).h),
             Wrap(
-              runSpacing: 17.0,
+              runSpacing: (17.0 * 2.91).h,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Row(
@@ -101,7 +102,8 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: SvgPicture.asset('assets/Arrow_back.svg')),
+                        child:
+                            SvgPicture.asset('assets/images/arrow_back.svg')),
                     Text(widget.text,
                         style: Theme.of(context).textTheme.headlineMedium),
                     FloatingActionButton.small(
@@ -121,7 +123,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                           // Обработка случая, если информация о пользователе недоступна
                         }
                       },
-                      child: Image.asset('assets/logo_rosseti.png'),
+                      child: Image.asset('assets/images/logo_rosseti.png'),
                     ),
                   ],
                 ),
@@ -130,7 +132,7 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                       style: Theme.of(context).textTheme.bodyMedium),
                 ),
                 SizedBox(
-                  height: 292.0,
+                  height: (292.0 * 2.91).h,
                   child: Material(
                     elevation: 2,
                     shape: RoundedRectangleBorder(
@@ -153,13 +155,13 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                     ),
                   ),
                 Wrap(
-                  spacing: 11,
+                  spacing: (11 * 2.91).h,
                   children: [
                     image != null
                         ? Image.file(
                             image!,
-                            width: 91.0,
-                            height: 51.0,
+                            width: (91.0 * 2.91).h,
+                            height: (51.0 * 2.91).h,
                             fit: BoxFit.contain,
                           )
                         : const SizedBox(),
@@ -183,18 +185,20 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                                         );
                                       },
                                       child: Container(
-                                        width: 91, // Ширина миниатюры
-                                        height: 51, // Высота миниатюры
+                                        width:
+                                            (91 * 2.91).h, // Ширина миниатюры
+                                        height:
+                                            (51 * 2.91).h, // Высота миниатюры
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                             image: MemoryImage(thumbnail),
                                             fit: BoxFit.fitHeight,
                                           ),
                                         ),
-                                        child: const Center(
+                                        child: Center(
                                           child: Icon(
                                             Icons.play_circle_outline,
-                                            size: 40,
+                                            size: (40 * 2.91).h,
                                           ),
                                         ),
                                       ),
@@ -203,9 +207,9 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                                 }
                               }
 
-                              return const SizedBox(
-                                width: 91,
-                                height: 51,
+                              return SizedBox(
+                                width: (91 * 2.91).h,
+                                height: (51 * 2.91).h,
                                 child: Text(
                                     'Ошибка загрузки'), // Просто серый фон, можно заменить на свою заглушку
                               );
@@ -214,41 +218,42 @@ class _MyStatefulWidgetState extends State<CreationShablon> {
                         : const SizedBox(),
                     if (widget.isConditionMet)
                       SizedBox(
-                        height: 43,
-                        width: 43,
+                        height: (43 * 2.91).h,
+                        width: (43 * 2.91).h,
                         child: FloatingActionButton(
                           heroTag: "btn2",
                           backgroundColor: Colors.white,
                           onPressed: () {
                             pickImage(ImageSource.gallery);
                           },
-                          child: SvgPicture.asset('assets/choose_photo.svg'),
+                          child: SvgPicture.asset(
+                              'assets/images/choose_photo.svg'),
                         ),
                       ),
                     if (widget.isConditionMet)
                       SizedBox(
-                        height: 43,
-                        width: 43,
+                        height: (43 * 2.91).h,
+                        width: (43 * 2.91).h,
                         child: FloatingActionButton(
                           heroTag: "btn3",
                           backgroundColor: Colors.white,
                           onPressed: () {
                             pickVideo(ImageSource.gallery);
                           },
-                          child:
-                              SvgPicture.asset('assets/video_player_icon.svg'),
+                          child: SvgPicture.asset(
+                              'assets/images/video_player_icon.svg'),
                         ),
                       ),
                   ],
                 ),
               ],
             ),
-            const SizedBox(
-              height: 31,
+            SizedBox(
+              height: (31 * 2.91).h,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 58,
+              height: (58 * 2.91).h,
               child: ElevatedButton(
                 onPressed: () async {
                   if (widget.blocType == 1) {

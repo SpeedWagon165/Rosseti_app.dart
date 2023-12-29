@@ -6,10 +6,10 @@ String userInfoToJson(UserInfo data) => json.encode(data.toJson());
 
 class UserInfo {
   int id;
-  String fullName;
-  dynamic phone;
-  dynamic topicId;
-  dynamic email;
+  String? fullName;
+  String? phone;
+  String? topicId;
+  String? email;
   int commentsCount;
   int ratingsCount;
   int acceptedProposalsCount;

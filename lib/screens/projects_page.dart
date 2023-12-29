@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rosseti_project/widgets/base_appbar.dart';
 import 'package:rosseti_project/widgets/project_botton_copy.dart';
 
@@ -14,11 +15,11 @@ class ProjectsPage extends StatelessWidget {
             textLogo: 'Проекты',
             textLow: 'Боба',
             isConditionMet: true,
-            suretextLow: false,
+            sureTextLow: false,
           ),
           const SizedBox(height: 21.0),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: (20.0 * 2.91).h),
             child: Column(
               children: [
                 ProjectBottoms(

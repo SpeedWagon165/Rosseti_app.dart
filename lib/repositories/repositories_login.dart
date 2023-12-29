@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/models/profile_json.dart';
-import 'package:rosseti_project/screens/sms_code_page.dart';
-import 'package:rosseti_project/screens/mainpage_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DioBase {
@@ -27,27 +25,21 @@ class DioBase {
 
   final String tokenKey = 'tokenKey';
 
-  Future<void> postData(String data, BuildContext context) async {
+  Future<void> postData(String data, VoidCallback onSuccess) async {
     try {
       final response = await dio.post('auth/phone', data: data);
-      if (response.statusCode == 200) {
-        debugPrint(response.toString());
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
         final responseData = response.data;
         if (responseData['success'] == true) {
-          debugPrint(responseData.toString());
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SmsCodePage(),
-            ),
-          );
+          onSuccess(); // Вызов функции навигации
         }
       }
     } catch (e) {
-      debugPrint(e as String?);
+      debugPrint(e.toString());
     }
   }
 
-  Future<String?> postPhoneCode(String code, BuildContext context) async {
+  Future<String?> postPhoneCode(String code, VoidCallback onSuccess) async {
     try {
       final response = await dio.post('auth/verify-code', data: {"code": code});
       if (response.statusCode == 200) {
@@ -55,17 +47,16 @@ class DioBase {
         final token = responseData['token'];
         saveToken(token);
         setupInterceptors();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        if (responseData['success'] == true) {
+          onSuccess();
+        }
+
         return token;
       } else {
         return null;
       }
     } catch (e) {
-      debugPrint(e as String?);
+      debugPrint(e.toString());
     }
     return null;
   }
@@ -88,7 +79,7 @@ class DioBase {
   Future<void> sendData(Map<String, dynamic> data) async {
     try {
       final response = await dio.post(
-        '/suggestions/store', // Замените на ваш эндпоинт
+        '/suggestions/store',
         data: jsonEncode(data),
         options: Options(
           headers: {
@@ -114,30 +105,29 @@ class DioBase {
       final responseData = response.data;
 
       if (responseData != null) {
-        debugPrint(responseData);
         return UserInfo.fromJson(responseData);
       } else {
         return null;
       }
     } catch (error) {
-      debugPrint('Ошибка при загрузке данных: $error');
+      debugPrint('Ошибка при загрузке данныx: $error');
       return null;
     }
   }
 
-  Future<void> fetchDataFromServer(
-      Function(List<Map<String, dynamic>>) onUpdate) async {
-    try {
-      final response = await dio.get('/topics');
-      final responseData = response.data;
-
-      List<Map<String, dynamic>> newTopics =
-          List<Map<String, dynamic>>.from(responseData['topics']);
-      onUpdate(newTopics);
-    } catch (error) {
-      debugPrint('Ошибка при загрузке данных: $error');
-    }
-  }
+  // Future<void> fetchDataFromServer(
+  //     Function(List<Map<String, dynamic>>) onUpdate) async {
+  //   try {
+  //     final response = await dio.get('/topics');
+  //     final responseData = response.data;
+  //
+  //     List<Map<String, dynamic>> newTopics =
+  //         List<Map<String, dynamic>>.from(responseData['topics']);
+  //     onUpdate(newTopics);
+  //   } catch (error) {
+  //     debugPrint('Ошибка при загрузке данных: $error');
+  //   }
+  // }
 
   Future<bool> saveToken(String token) async {
     debugPrint('token here');

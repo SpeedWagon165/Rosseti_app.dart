@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
+
+import 'mainpage_page.dart';
 
 class SmsCodePage extends StatefulWidget {
   const SmsCodePage({super.key});
@@ -16,11 +19,14 @@ class _SmsCodePageState extends State<SmsCodePage> {
     return Scaffold(
         body: SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(
-            bottom: 120.0, top: 0.0, right: 35.0, left: 35.0),
+        padding: EdgeInsets.only(
+            bottom: (120.0 * 2.91).h,
+            top: 0.0,
+            right: 35.0,
+            left: (35.0 * 2.91).h),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 273),
+            SizedBox(height: (273 * 2.91).h),
             Material(
               elevation: 4,
               shape: RoundedRectangleBorder(
@@ -36,13 +42,19 @@ class _SmsCodePageState extends State<SmsCodePage> {
                 },
               ),
             ),
-            const SizedBox(height: 17),
+            SizedBox(height: (17 * 2.91).h),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 58,
+              height: (58 * 2.91).h,
               child: ElevatedButton(
                 onPressed: () {
-                  DioBase().postPhoneCode(textController.text, context);
+                  DioBase().postPhoneCode(textController.text, () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MainPage(),
+                      ),
+                    );
+                  });
                   debugPrint(textController.text);
                 },
                 child: const Text(

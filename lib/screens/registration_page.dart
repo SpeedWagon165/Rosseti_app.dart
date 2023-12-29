@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rosseti_project/screens/phone_number_page.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -9,14 +10,17 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(children: <Widget>[
-          const SizedBox(height: 151.0),
-          Image.asset('assets/logo_rosseti.png'),
-          const SizedBox(height: 30.0),
+          SizedBox(height: 400.h),
+          SizedBox(
+            height: 500.h,
+            child: Image.asset('assets/images/logo_rosseti.png'),
+          ),
+          SizedBox(height: 70.h),
           Text(
             'seti.inno',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          const SizedBox(height: 20.0),
+          SizedBox(height: 55.h),
           const Text(
             'Рацианализатор',
             style: TextStyle(
@@ -27,11 +31,14 @@ class MyHomePage extends StatelessWidget {
         ]),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(
-            bottom: 120.0, top: 0.0, right: 35.0, left: 35.0),
+        padding: EdgeInsets.only(
+            bottom: (120.0 * 2.91).h,
+            top: 0.0,
+            right: (35.0 * 2.91).h,
+            left: (35.0 * 2.91).h),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 58,
+          height: (58 * 2.91).h,
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ManePageBottoms extends StatelessWidget {
@@ -24,14 +25,15 @@ class ManePageBottoms extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 36.0, horizontal: 17.0),
+          padding: EdgeInsets.symmetric(
+              vertical: (36.0 * 2.91).h, horizontal: (17.0 * 2.91).h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SvgPicture.asset(logo),
               Flexible(
                 child: SizedBox(
-                  width: 150,
+                  width: (150 * 2.91).h,
                   child: Text(text,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.clip,

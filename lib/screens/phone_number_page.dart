@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
+import 'package:rosseti_project/screens/sms_code_page.dart';
 
 class PhoneNumberPage extends StatefulWidget {
   const PhoneNumberPage({super.key});
@@ -16,8 +18,8 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-              bottom: 120.0, top: 0.0, right: 35.0, left: 35.0),
+          padding: EdgeInsets.only(
+              bottom: (120.0 * 2.91).h, top: 0.0, right: 35.0, left: 35.0),
           child: Column(
             children: <Widget>[
               const SizedBox(height: 273),
@@ -37,10 +39,16 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
               const SizedBox(height: 17),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 58,
+                height: (58 * 2.91).h,
                 child: ElevatedButton(
                   onPressed: () {
-                    DioBase().postData(textController.text, context);
+                    DioBase().postData('some data', () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SmsCodePage(),
+                        ),
+                      );
+                    });
                   },
                   child: const Text(
                     'Далее',

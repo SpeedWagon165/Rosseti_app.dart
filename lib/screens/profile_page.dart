@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rosseti_project/widgets/base_appbar.dart';
 import 'package:rosseti_project/models/profile_json.dart';
-import 'package:rosseti_project/repositories/repositories_login.dart';
 
 class Status extends StatelessWidget {
   final UserInfo info;
@@ -13,10 +12,10 @@ class Status extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: BaseAppBar(
-          suretextLow: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight((100.0 * 2.91).h),
+        child: const BaseAppBar(
+          sureTextLow: false,
           isConditionMet: false,
           textLow: 'Расскажите о предложении',
           textLogo: 'Мой статус',
@@ -24,19 +23,19 @@ class Status extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 35.0),
+        padding: EdgeInsets.symmetric(horizontal: (35.0 * 2.91).h),
         children: [
           SizedBox(
-            height: 150,
-            width: 150,
+            height: (150 * 2.91).h,
+            width: (150 * 2.91).h,
             child: SvgPicture.asset(
-              'assets/crown_profile.svg',
+              'assets/images/crown_profile.svg',
               fit: BoxFit.contain,
               alignment: Alignment.center,
             ),
           ),
           SizedBox(
-            height: 30.0,
+            height: (30.0 * 2.91).h,
             child: Text('Серебряный статус',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium),
@@ -58,28 +57,28 @@ class Status extends StatelessWidget {
               title: const Text('Одобрено'),
               trailing: Text(info.acceptedProposalsCount.toString())),
           const SizedBox(height: 10.0),
-          const SizedBox(
-              height: 30.0,
+          SizedBox(
+              height: (30.0 * 2.91).h,
               child: Text(
                 'Итого 1300 бонусов',
                 textAlign: TextAlign.center,
               )),
-          const SizedBox(
-            height: 22.0,
+          SizedBox(
+            height: (22.0 * 2.91).h,
           ),
           SizedBox(
-            height: 100.0,
+            height: (100.0 * 2.91).h,
             child: Text(
               'До золотого статуса ещё ${(45 - info.ratingsCount).toString()} оценок или ${(31 - info.commentsCount).toString()} комментариев или ${(5 - info.proposalsCount).toString()} предложений',
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(
-            height: 30.0,
+          SizedBox(
+            height: (30.0 * 2.91).h,
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 58,
+            height: (58 * 2.91).h,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
