@@ -8,7 +8,7 @@ class CreationPage3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: CreationShablon(
         text: 'Создать',
         textLow: 'Расскажите как будет',

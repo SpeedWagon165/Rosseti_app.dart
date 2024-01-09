@@ -3,18 +3,11 @@ import 'package:rosseti_project/screens/creation_page_2.dart';
 import 'package:rosseti_project/widgets/creation_page_layout.dart';
 
 class CreationPage1 extends StatelessWidget {
-  final String title;
-  final int topicId;
-
-  const CreationPage1({
-    Key? key,
-    required this.title,
-    required this.topicId,
-  }) : super(key: key);
+  const CreationPage1({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: CreationShablon(
           text: 'Создать',

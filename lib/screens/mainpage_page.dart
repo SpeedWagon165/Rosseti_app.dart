@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const CreationPageStart(),
+                        builder: (context) => CreationPageStart(),
                       ),
                     );
                   }),
