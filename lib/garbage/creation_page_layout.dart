@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rosseti_project/Blocs/send_messege_bloc.dart';
 import 'package:rosseti_project/models/profile_json.dart';
 import 'package:rosseti_project/repositories/repositories_login.dart';
 import 'package:rosseti_project/screens/video_player_example_page.dart';
@@ -11,11 +12,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rosseti_project/screens/profile_page.dart';
+import 'package:rosseti_project/models/json_response_convert.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../blocs/providers.dart';
-
-class CreationShablon extends ConsumerWidget {
+class CreationShablon extends StatefulWidget {
+  const CreationShablon({
+    Key? key,
+    required this.text,
+    required this.textLow,
+    required this.next,
+    required this.isConditionMet,
+    required this.buttonText,
+    required this.blocType,
+  }) : super(key: key);
   final String text;
   final String buttonText;
   final String textLow;
@@ -23,51 +32,41 @@ class CreationShablon extends ConsumerWidget {
   final bool isConditionMet;
   final int blocType;
 
-  CreationShablon({
-    Key? key,
-    required this.text,
-    required this.buttonText,
-    required this.textLow,
-    required this.next,
-    required this.isConditionMet,
-    required this.blocType,
-  }) : super(key: key);
+  @override
+  State<CreationShablon> createState() => _MyStatefulWidgetState();
+}
 
+class _MyStatefulWidgetState extends State<CreationShablon> {
   final TextEditingController textController = TextEditingController();
-  final dioBase = DioBase();
+  DioBase dioBase = DioBase();
   late final String videoPath;
 
-  Future pickImage(WidgetRef ref, ImageSource source) async {
+  File? image;
+
+  Future pickImage(ImageSource source) async {
     try {
-      final pickedImage = await ImagePicker().pickImage(source: source);
-      if (pickedImage == null) {
-        print('No image selected.');
-        return;
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        return 'Ошибка';
       }
-      final imageTemporary = File(pickedImage.path);
-      ref.read(existingImageProvider.notifier).state = imageTemporary;
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
 
-  Future<void> pickVideo(WidgetRef ref, ImageSource source) async {
-    try {
-      final pickedVideo = await ImagePicker().pickVideo(source: source);
-      if (pickedVideo == null) {
-        print('No video selected.');
-        return;
-      }
-      final videoFile = File(pickedVideo.path);
-      ref.read(existingVideoProvider.notifier).state = videoFile;
+  File? video;
 
-      videoPath = videoFile.path;
-
-      final thumbnail = await getVideoThumbnail(videoPath);
-      ref.read(videoThumbnailProvider.notifier).state = thumbnail;
-    } on PlatformException catch (e) {
-      print('Failed to pick video: $e');
+  Future<Uint8List?> pickVideo(ImageSource source) async {
+    final pickedVideo = await ImagePicker().pickVideo(source: source);
+    if (pickedVideo == null) {
+      return null;
     }
+    final video = File(pickedVideo.path);
+    videoPath = video.path;
+    setState(() => this.video = video);
+    return getVideoThumbnail(videoPath);
   }
 
   Future<Uint8List?> getVideoThumbnail(String videoPath) async {
@@ -81,12 +80,7 @@ class CreationShablon extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final title = ref.watch(textProvider.notifier).state;
-    final topicId = ref.watch(selectedTopicIdProvider.notifier).state;
-    final image = ref.watch(existingImageProvider);
-    final video = ref.watch(existingVideoProvider);
-    final thumbnaill = ref.watch(videoThumbnailProvider.notifier).state;
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35.0),
       child: SingleChildScrollView(
@@ -109,7 +103,7 @@ class CreationShablon extends ConsumerWidget {
                         },
                         child:
                             SvgPicture.asset('assets/images/arrow_back.svg')),
-                    Text(text,
+                    Text(widget.text,
                         style: Theme.of(context).textTheme.headlineMedium),
                     FloatingActionButton.small(
                       heroTag: "btn1",
@@ -133,7 +127,7 @@ class CreationShablon extends ConsumerWidget {
                   ],
                 ),
                 Center(
-                  child: Text(textLow,
+                  child: Text(widget.textLow,
                       style: Theme.of(context).textTheme.bodyMedium),
                 ),
                 SizedBox(
@@ -152,7 +146,7 @@ class CreationShablon extends ConsumerWidget {
                     ),
                   ),
                 ),
-                if (isConditionMet)
+                if (widget.isConditionMet)
                   Center(
                     child: Text(
                       'Добавьте фото или видео',
@@ -164,7 +158,7 @@ class CreationShablon extends ConsumerWidget {
                   children: [
                     image != null
                         ? Image.file(
-                            image,
+                            image!,
                             width: (91.0 * 2.91).h,
                             height: (51.0 * 2.91).h,
                             fit: BoxFit.contain,
@@ -221,7 +215,7 @@ class CreationShablon extends ConsumerWidget {
                             },
                           )
                         : const SizedBox(),
-                    if (isConditionMet)
+                    if (widget.isConditionMet)
                       SizedBox(
                         height: (43 * 2.91).h,
                         width: (43 * 2.91).h,
@@ -229,13 +223,13 @@ class CreationShablon extends ConsumerWidget {
                           heroTag: "btn2",
                           backgroundColor: Colors.white,
                           onPressed: () {
-                            pickImage(ref, ImageSource.gallery);
+                            pickImage(ImageSource.gallery);
                           },
                           child: SvgPicture.asset(
                               'assets/images/choose_photo.svg'),
                         ),
                       ),
-                    if (isConditionMet)
+                    if (widget.isConditionMet)
                       SizedBox(
                         height: (43 * 2.91).h,
                         width: (43 * 2.91).h,
@@ -243,7 +237,7 @@ class CreationShablon extends ConsumerWidget {
                           heroTag: "btn3",
                           backgroundColor: Colors.white,
                           onPressed: () {
-                            pickVideo(ref, ImageSource.gallery);
+                            pickVideo(ImageSource.gallery);
                           },
                           child: SvgPicture.asset(
                               'assets/images/video_player_icon.svg'),
@@ -261,49 +255,110 @@ class CreationShablon extends ConsumerWidget {
               height: (58 * 2.91).h,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (blocType == 1) {
-                    ref.read(existingVideoProvider.notifier).state = video;
-                    ref.read(existingImageProvider.notifier).state = image;
-                    ref.read(existingTextProvider.notifier).state =
-                        textController.text;
+                  if (widget.blocType == 1) {
+                    BlocProvider.of<ExistingTextBloc>(context)
+                        .add(ExistingTextEvent(textController.text));
+                    BlocProvider.of<ExistingImageBloc>(context)
+                        .add(ExistingImageEvent(image));
+                    BlocProvider.of<ExistingVideoBloc>(context)
+                        .add(ExistingVideoEvent(video));
                   }
-                  if (blocType == 2) {
-                    ref.watch(proposedVideoProvider.notifier).state = video;
-                    ref.watch(proposedImageProvider.notifier).state = image;
-                    ref.watch(proposedTextProvider.notifier).state =
-                        textController.text;
+                  if (widget.blocType == 2) {
+                    BlocProvider.of<ProposedTextBloc>(context)
+                        .add(ProposedTextEvent(textController.text));
+                    BlocProvider.of<ProposedImageBloc>(context)
+                        .add(ProposedImageEvent(image));
+                    BlocProvider.of<ProposedVideoBloc>(context)
+                        .add(ProposedVideoEvent(video));
                   }
-                  if (blocType == 3) {
-                    ref.read(positiveEffectTextProvider.notifier).state =
-                        textController.text;
-                    final formData = FormData.fromMap({
-                      'title': title,
-                      'topic_id': topicId,
-                      'existing_solution_text': ref.watch(existingTextProvider),
-                      'existing_solution_image':
-                          ref.watch(existingImageProvider),
-                      'existing_solution_video':
-                          ref.watch(existingVideoProvider),
-                      'proposed_solution_text': ref.watch(proposedTextProvider),
-                      'proposed_solution_image':
-                          ref.watch(proposedImageProvider),
-                      'proposed_solution_video':
-                          ref.watch(proposedVideoProvider),
-                      'positive_effect': ref.watch(positiveEffectTextProvider),
-                    });
+                  if (widget.blocType == 3) {
+                    BlocProvider.of<PositiveEffectBloc>(context)
+                        .add(PositiveEffectEvent(textController.text));
+                    final titleBlocState =
+                        BlocProvider.of<TitleBloc>(context).state;
+                    final topicBlocState =
+                        BlocProvider.of<TopicBloc>(context).state;
+                    final existingTextBlocState =
+                        BlocProvider.of<ExistingTextBloc>(context).state;
+                    final existingImageBlocState =
+                        BlocProvider.of<ExistingImageBloc>(context).state;
+                    final existingVideoBlocState =
+                        BlocProvider.of<ExistingVideoBloc>(context).state;
+                    final proposedTextBlocState =
+                        BlocProvider.of<ProposedTextBloc>(context).state;
+                    final proposedImageBlocState =
+                        BlocProvider.of<ProposedImageBloc>(context).state;
+                    final proposedVideoBlocState =
+                        BlocProvider.of<ProposedVideoBloc>(context).state;
+                    final positiveEffectBlocState =
+                        BlocProvider.of<PositiveEffectBloc>(context).state;
 
-                    final dataToSend = Map<String, dynamic>.fromEntries(
-                      formData.fields.map((e) => MapEntry(e.key, e.value)),
+                    final allBlocksData = AllBlocksData(
+                      titleValue: (titleBlocState is TitleState)
+                          ? titleBlocState.title
+                          : '',
+                      topicValue: (topicBlocState is TopicState)
+                          ? topicBlocState.topic
+                          : 0,
+                      existingTextValue:
+                          (existingTextBlocState is ExistingTextState)
+                              ? existingTextBlocState.existingText
+                              : '',
+                      existingImageValue:
+                          (existingImageBlocState is ExistingImageState)
+                              ? existingImageBlocState.existingImage
+                              : null,
+                      existingVideoValue:
+                          (existingVideoBlocState is ExistingVideoState)
+                              ? existingVideoBlocState.existingVideo
+                              : null,
+                      proposedTextValue:
+                          (proposedTextBlocState is ProposedTextState)
+                              ? proposedTextBlocState.proposedText
+                              : '',
+                      proposedImageValue:
+                          (proposedImageBlocState is ProposedImageState)
+                              ? proposedImageBlocState.proposedImage
+                              : null,
+                      proposedVideoValue:
+                          (proposedVideoBlocState is ProposedVideoState)
+                              ? proposedVideoBlocState.proposedVideo
+                              : null,
+                      positiveEffectValue:
+                          (positiveEffectBlocState is PositiveEffectState)
+                              ? positiveEffectBlocState.positiveEffect
+                              : '',
                     );
-
-                    dioBase.sendData(dataToSend);
+                    final formData = FormData.fromMap({
+                      'title': allBlocksData.titleValue,
+                      'topic_id': allBlocksData.topicValue,
+                      'existing_solution_text': allBlocksData.existingTextValue,
+                      'existing_solution_image': await MultipartFile.fromFile(
+                        allBlocksData.existingImageValue!.path,
+                        filename: 'existing_image.jpg',
+                      ),
+                      'existing_solution_video': await MultipartFile.fromFile(
+                        allBlocksData.existingVideoValue!.path,
+                        filename: 'existing_video.jpg',
+                      ),
+                      'proposed_solution_text': allBlocksData.proposedTextValue,
+                      'proposed_solution_image': await MultipartFile.fromFile(
+                        allBlocksData.proposedImageValue!.path,
+                        filename: 'proposed_image.jpg',
+                      ),
+                      'proposed_solution_video': await MultipartFile.fromFile(
+                        allBlocksData.proposedVideoValue!.path,
+                        filename: 'proposed_video.jpg',
+                      ),
+                      'positive_effect': allBlocksData.positiveEffectValue,
+                    });
+                    dioBase.sendData(formData);
                   }
-
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => next));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => widget.next));
                 },
                 child: Text(
-                  buttonText,
+                  widget.buttonText,
                 ),
               ),
             ),

@@ -59,7 +59,7 @@ class Status extends StatelessWidget {
           const SizedBox(height: 10.0),
           SizedBox(
               height: (30.0 * 2.91).h,
-              child: Text(
+              child: const Text(
                 'Итого 1300 бонусов',
                 textAlign: TextAlign.center,
               )),

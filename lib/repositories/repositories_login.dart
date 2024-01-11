@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rosseti_project/models/profile_json.dart';
@@ -76,14 +74,14 @@ class DioBase {
     );
   }
 
-  Future<void> sendData(Map<String, dynamic> data) async {
+  Future<void> sendData(FormData formData) async {
     try {
       final response = await dio.post(
         '/suggestions/store',
-        data: jsonEncode(data),
+        data: formData,
         options: Options(
           headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
+            'Content-Type': 'multipart/form-data',
           },
         ),
       );

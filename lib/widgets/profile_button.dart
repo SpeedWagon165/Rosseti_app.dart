@@ -26,11 +26,13 @@ class _ProfileButtonState extends State<ProfileButton> {
         } else {
           final UserInfo? info = await dioBase.profileInfo();
           if (info != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Status(info: info),
-              ),
-            );
+            if (mounted) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Status(info: info),
+                ),
+              );
+            }
           } else {
             const Text("Ошибка загрузки");
             // Обработка случая, если информация о пользователе недоступна
